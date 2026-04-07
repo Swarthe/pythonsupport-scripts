@@ -32,6 +32,7 @@ progress() {
             printf '%s\n' "$line" >>"$tmp_file"
             printf '%s\n' "$line" >>"$log_file"
         done <"$fifo"
+        echo >>"$log_file"
     } &
     local reader_pid=$!
 
