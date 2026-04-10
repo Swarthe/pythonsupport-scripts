@@ -10,7 +10,7 @@ progress() {
         touch "$log_file" || return 1
     fi
 
-    echo "[DTULOG]: started at $(date)" >> "$log_file"
+    echo "[DTULOG]: $msg ($(date))" >> "$log_file"
     exec 4>/dev/tty 2>/dev/null || exec 4>&1
 
     cleanup() {
