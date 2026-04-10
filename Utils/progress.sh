@@ -1,19 +1,16 @@
 #!/usr/bin/bash
 
 progress() {
-    local msg=$1
+    local msg=$1 log_file="/tmp/dtu_log.txt" start_line=1
     shift
-    local log_file=${PROGRESS_LOG_FILE:-progress.log}
-    local start_line=0
 
-    [[ -f "$log_file" ]] && start_line=$(wc -l <"$log_file")
-
-    # append separator if needed
-    if [[ -s "$log_file" ]]; then
-        echo >> "$log_file"
-        ((start_line++))
+    if [[ -f "$log_file" ]]; then
+        start_line=$(($(wc -l <"$log_file")+1))
+    else
+        touch "$log_file" || return 1
     fi
 
+    echo "[DTULOG]: started at $(date)" >> "$log_file"
     exec 4>/dev/tty 2>/dev/null || exec 4>&1
 
     cleanup() {
@@ -49,11 +46,11 @@ progress() {
     echo "$msg"
 
     if (( status != 0 )); then
-        echo  "DTULOG: failure ($status)" >> "$log_file"
+        echo  "[DTULOG]: failure ($status)" >> "$log_file"
         printf ' ┗━ \033[1;31m%s\033[00m (error code %d).\n' Failure $status
         echo "    Please contact us and provide the file '$log_file'."
     else
-        echo  "DTULOG: success" >> "$log_file"
+        echo  "[DTULOG]: success" >> "$log_file"
         printf ' ┗━ \033[1;32m%s\033[0m\n' 'Success!'
     fi
 
@@ -68,7 +65,7 @@ output1() {
     echo 5; sleep 0.5
     echo 6; sleep 0.5
     echo done >&2; sleep 0.5
-    return 0
+    return 1
 }
 
 progress "something is happening..." output1
