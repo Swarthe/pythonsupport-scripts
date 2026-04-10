@@ -10,8 +10,8 @@ progress() {
 
     # append separator if needed
     if [[ -s "$log_file" ]]; then
-        printf '\n' >> "$log_file"
-        ((start_line++))  # account for separator line
+        echo >> "$log_file"
+        ((start_line++))
     fi
 
     exec 4>/dev/tty 2>/dev/null || exec 4>&1
@@ -31,10 +31,13 @@ progress() {
 
     while kill -0 "$cmd_pid" 2>/dev/null; do
         printf '\e[H\e[2J' >&4
+        printf '  \033[1m%s\033[0m\n' "DTU installation in progress." >&4
         printf '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n' >&4
         tail -n +"$((start_line + 1))" "$log_file" 2>/dev/null | tail -n 5 >&4
         printf '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n' >&4
-        printf ' [%c] %s\n' "${spin:i++%${#spin}:1}" "$msg" >&4
+        printf '  \033[1m[%c] %s\033[0m\n' "${spin:i++%${#spin}:1}" "$msg" >&4
+        printf '      %s\n' \
+            "Please do not interrupt this script. It may take up to 15 minutes." >&4
         sleep 0.1
     done
 
@@ -43,11 +46,15 @@ progress() {
 
     cleanup
     trap - EXIT TERM HUP
+    echo "$msg"
 
     if (( status != 0 )); then
-        printf '✖ failed (%d)\n' "$status"
+        echo  "DTULOG: failure ($status)" >> "$log_file"
+        printf ' ┗━ \033[1;31m%s\033[00m (error code %d).\n' Failure $status
+        echo "    Please contact us and provide the file '$log_file'."
     else
-        printf '✓ done\n'
+        echo  "DTULOG: success" >> "$log_file"
+        printf ' ┗━ \033[1;32m%s\033[0m\n' 'Success!'
     fi
 
     return "$status"
