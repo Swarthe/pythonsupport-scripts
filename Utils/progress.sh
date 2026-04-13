@@ -1,8 +1,12 @@
 #!/usr/bin/bash
 
+# Params:
+# - message: str
+# - estimated time: int
+# - command: str list
 progress() {
-    local msg=$1 log_file="/tmp/dtu_log.txt" start_line=1
-    shift
+    local msg=$1 mins=$2 log_file="/tmp/dtu_log.txt" start_line=1
+    shift 2
 
     if [[ -f "$log_file" ]]; then
         start_line=$(($(wc -l <"$log_file")+1))
@@ -34,7 +38,7 @@ progress() {
         printf '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n' >&4
         printf '  \033[1m[%c] %s\033[0m\n' "${spin:i++%${#spin}:1}" "$msg" >&4
         printf '      %s\n' \
-            "Please do not interrupt this script. It may take up to 15 minutes." >&4
+            "Please do not interrupt this script - it may take up to $mins minutes." >&4
         sleep 0.1
     done
 
@@ -57,6 +61,17 @@ progress() {
     return "$status"
 }
 
+output0() {
+    echo 1; sleep 1
+    echo 2; sleep 1
+    echo 3; sleep 1
+    echo 4; sleep 1
+    echo 5; sleep 1
+    echo 6; sleep 1
+    echo done >&2; sleep 0.5
+    return 0
+}
+
 output1() {
     echo 1; sleep 0.5
     echo 2; sleep 0.5
@@ -68,4 +83,4 @@ output1() {
     return 1
 }
 
-progress "something is happening..." output1
+progress "Step 1/1: Installing XYZ" 15 output0
