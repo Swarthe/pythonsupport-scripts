@@ -16,6 +16,11 @@ SETTINGS_FILE="$SETTINGS_DIR/settings.json"
 echo "=== Applying VS Code Settings ==="
 echo ""
 
+if [[ -e "$SETTINGS_FILE" ]]; then
+  echo "  [ERROR] $SETTINGS_FILE already exists. Aborting to avoid overwrite." >&2
+  exit 1
+fi
+
 mkdir -p "$SETTINGS_DIR"
 curl -fsSL "$REPO_BASE_URL/Core/VsCode/config/default_settings_MacOS.json" > "$SETTINGS_FILE"
 echo "  [OK] Settings applied to $SETTINGS_FILE"
