@@ -10,14 +10,10 @@
 
 set -euo pipefail
 
-echo "=== Installing VS Code Extensions ==="
-echo ""
-
 CODE_CLI="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 
-if [ ! -x "$CODE_CLI" ]; then
-    CODE_CLI=$(which code 2>/dev/null || true)
-fi
+echo "=== Installing VS Code Extensions ==="
+echo ""
 
 if [ ! -x "$CODE_CLI" ]; then
     echo "  ERROR: VS Code not found at $CODE_CLI"
