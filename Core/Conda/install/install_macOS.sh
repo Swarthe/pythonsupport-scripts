@@ -33,13 +33,17 @@ else
 
     # Run installer in batch mode (no prompts, no PATH modification)
     echo "  Running installer..."
+    # Installer options:
+    # '-b': run non interactively
+    # '-u': update an existing installation if there is one
+    # '-c': don't modify shell rc files
     bash "$TMPDIR_PATH/${INSTALLER_NAME}" -buc -p "$INSTALL_DIR"
     echo "  [OK] Miniforge installed to $INSTALL_DIR"
 fi
 
 # Load conda shell functions and activate the base environment
 echo "  Initializing conda..."
-. "${INSTALL_DIR}/etc/profile.d/conda.sh" && conda activate "${INSTALL_DIR}"
+source "${INSTALL_DIR}/etc/profile.d/conda.sh" && conda activate "${INSTALL_DIR}"
 
 # Initialize conda for all supported shells on this machine
 conda init --all
