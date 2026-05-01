@@ -25,7 +25,7 @@ if [ -d "$INSTALL_DIR" ] && [ -x "$INSTALL_DIR/bin/conda" ]; then
 else
     # Download
     TMPDIR_PATH="$(mktemp -d)"
-    trap 'rm -rf "$TMPDIR_PATH"' EXIT
+    trap "rm -rf '$TMPDIR_PATH'" EXIT KILL INT
 
     echo "  Downloading ${INSTALLER_NAME}..."
     curl -fSL "${BASE_URL}/${INSTALLER_NAME}" -o "$TMPDIR_PATH/${INSTALLER_NAME}"
