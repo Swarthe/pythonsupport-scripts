@@ -10,31 +10,31 @@
 
 set -euo pipefail
 
-STD_CODE_CLI="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+std_code_cli="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 
 echo "=== Installing VS Code Extensions ==="
 echo ""
 
-if [ ! -x "$STD_CODE_CLI" ]; then
-    CODE_CLI=$(command -v code 2>/dev/null || true)
+if [ ! -x "$std_code_cli" ]; then
+    code_cli=$(command -v code 2>/dev/null || true)
 
-    if [ ! -x "$CODE_CLI" ]; then
-        echo "  ERROR: VS Code not found at $STD_CODE_CLI"
+    if [ ! -x "$code_cli" ]; then
+        echo "  ERROR: VS Code not found at $std_code_cli"
         exit 1
     fi
 else
-    CODE_CLI="$STD_CODE_CLI"
+    code_cli="$std_code_cli"
 fi
 
 while IFS= read -r line || [ -n "$line" ]; do
     [[ -z "$line" || "$line" == \#* ]] && continue
 
-    if "$CODE_CLI" --install-extension "$line" --force 2>/dev/null; then
+    if "$code_cli" --install-extension "$line" --force 2>/dev/null; then
         echo "  [OK] $line"
     else
         echo "  [FAIL] $line"
     fi
-done < <(curl -fsSL "$REPO_BASE_URL/Core/VsCode/config/extensions.txt")
+done < <(curl -fsSL "$PS_REPO_URL/Core/VsCode/config/extensions.txt")
 
 echo ""
 echo "=== Extensions complete! ==="

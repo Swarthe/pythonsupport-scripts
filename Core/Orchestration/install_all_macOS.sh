@@ -10,8 +10,8 @@
 
 set -euo pipefail
 
-REPO_BASE_URL="${REPO_BASE_URL:-https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/dev}"
-export REPO_BASE_URL
+PS_REPO_URL="${PS_REPO_URL:-https://raw.githubusercontent.com/dtudk/pythonsupport-scripts/dev}"
+export PS_REPO_URL
 
 echo "========================================="
 echo "  DTU Python Support - Full Installation"
@@ -20,12 +20,12 @@ echo ""
 
 # Step 1: Install Miniforge/Conda
 echo "--- Step 1/2: Miniforge ---"
-bash <(curl -fsSL "$REPO_BASE_URL/Core/Conda/install/install_macOS.sh")
+bash <(curl -fsSL "$PS_REPO_URL/Core/Conda/install/install_macOS.sh")
 echo ""
 
 # Step 2: Install VS Code (includes extensions and settings)
 echo "--- Step 2/2: VS Code ---"
-bash <(curl -fsSL "$REPO_BASE_URL/Core/VsCode/install/install_macOS.sh")
+bash <(curl -fsSL "$PS_REPO_URL/Core/VsCode/install/install_macOS.sh")
 echo ""
 
 echo "========================================="
