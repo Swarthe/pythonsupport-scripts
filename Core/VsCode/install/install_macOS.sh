@@ -23,7 +23,7 @@ if command -v code &>/dev/null || [ -d "$app_path" ]; then
 else
     # Download
     tmpdir_path="$(mktemp -d)"
-    trap 'rm -rf "$tmpdir_path"' EXIT
+    trap "rm -rf '$tmpdir_path'" EXIT KILL INT
 
     echo "  Downloading VS Code..."
     curl -fSL "$download_url" -o "$tmpdir_path/VSCode.zip"
