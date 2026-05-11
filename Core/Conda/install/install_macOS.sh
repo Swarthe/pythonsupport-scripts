@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-base_url="https://github.com/philipnickel/miniforge-PIS/releases/latest/download"
+PS_FORGE_URL="${PS_FORGE_URL:-https://github.com/philipnickel/miniforge-PIS/releases/latest/download}"
 arch="$(uname -m)"
 installer_name="Miniforge3-MacOSX-${arch}.sh"
 install_dir="$HOME/miniforge3-dtu"
@@ -28,7 +28,7 @@ else
     trap "rm -rf '$tmpdir_path'" EXIT KILL INT
 
     echo "  Downloading ${installer_name}..."
-    curl -fSL "${base_url}/${installer_name}" -o "$tmpdir_path/${installer_name}"
+    curl -fSL "${PS_FORGE_URL}/${installer_name}" -o "$tmpdir_path/${installer_name}"
     echo "  [OK] Download complete"
 
     # Run installer in batch mode (no prompts, no PATH modification)
